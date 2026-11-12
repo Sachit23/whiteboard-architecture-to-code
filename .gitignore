@@ -5,3 +5,8 @@ __pycache__/
 .env
 .env.*
 !.env.example
+
+# Generated symbol images and trained model checkpoints.
+/data/prototypes/
+/data/symbols/
+/artifacts/

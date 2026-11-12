@@ -19,3 +19,18 @@ python -m app
 Expected output: `Whiteboard Architecture-to-Code Generator is ready.`
 
 Later milestones add image preprocessing, symbol classification and training, OCR, graph parsing, and configuration generation in that order.
+
+## Symbol training
+
+With the virtual environment activated, install the training dependencies and run these commands from the repository root:
+
+```sh
+python -m pip install numpy opencv-python torch
+python -m app.generate_symbols
+python -m app.generate_dataset
+python -m app.train
+```
+
+The generators create four symbol prototypes, 400 training images, and 80 validation images. Training runs for 10 epochs and saves the final weights to `artifacts/symbol_cnn.pt`.
+
+The generated folders `data/prototypes/`, `data/symbols/`, and `artifacts/` are ignored by Git. Run the commands above to recreate them after cloning the repository.

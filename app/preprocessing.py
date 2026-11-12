@@ -1,12 +1,6 @@
 import cv2
 import numpy as np
 
-# gray = np.array(
-#     [[245, 220, 240],
-#      [30, 127, 180]],
-#     dtype=np.uint8
-# )
-
 # Generate a sample diagram.
 canvas = np.full((180, 360), 245, dtype=np.uint8)
 cv2.rectangle(canvas, (25, 45), (145, 135), 30, 3)
