@@ -40,3 +40,5 @@ cv2.line(spaced, (155, 90), (205, 90), 30, 3)
 cv2.line(spaced, (190, 82), (205, 90), 30, 3)
 cv2.line(spaced, (190, 98), (205, 90), 30, 3)
 cv2.imwrite("spaced_diagram.png", spaced)
+
+cv2.imwrite("spaced_left_diagram.png", cv2.flip(spaced, 1))
