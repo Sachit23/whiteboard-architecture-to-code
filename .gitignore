@@ -10,3 +10,8 @@ __pycache__/
 /data/prototypes/
 /data/symbols/
 /artifacts/
+
+# Generated graph exports and intermediate preprocessing images.
+/graph_*.json
+/mask_*.png
+/box_*.png
