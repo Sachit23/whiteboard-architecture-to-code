@@ -26,3 +26,17 @@ for number, (x, y, width, height) in enumerate(boxes, start=1):
     crop = gray[y:y + height, x:x + width]
     cv2.imwrite(f"box_{number}.png", crop)
     print(f"Box {number}: x={x}, y={y}, width={width}, height={height}")
+
+connected = gray.copy()
+# Draw the shaft from the left box's edge to the right box's edge.
+cv2.line(connected, (145, 90), (215, 90), 30, 3)
+# Draw two short strokes that meet at the arrow tip.
+cv2.line(connected, (200, 82), (215, 90), 30, 3)
+cv2.line(connected, (200, 98), (215, 90), 30, 3)
+cv2.imwrite("connected_diagram.png", connected)
+
+spaced = gray.copy()
+cv2.line(spaced, (155, 90), (205, 90), 30, 3)
+cv2.line(spaced, (190, 82), (205, 90), 30, 3)
+cv2.line(spaced, (190, 98), (205, 90), 30, 3)
+cv2.imwrite("spaced_diagram.png", spaced)
