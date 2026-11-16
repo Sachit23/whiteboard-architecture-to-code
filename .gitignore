@@ -18,3 +18,4 @@ __pycache__/
 
 # Default output from app.generate_compose.
 /docker-compose.yml
+/compose-cache.yml

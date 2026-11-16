@@ -28,7 +28,7 @@ def build_compose(graph):
                 "POSTGRES_USER": "appuser",
                 "POSTGRES_PASSWORD": password,
             }
-        else:
+        elif node["type"] != "cache":
             raise ValueError(f"Unsupported symbol type: {node['type']}")
 
         services[node_id] = service
@@ -37,19 +37,29 @@ def build_compose(graph):
         source, target = edge["source"], edge["target"]
         if source not in nodes or target not in nodes:
             raise ValueError(f"Edge references an unknown node: {source} → {target}")
-        if nodes[source]["type"] != "service" or nodes[target]["type"] != "database":
-            raise ValueError(f"Expected a service-to-database edge: {source} → {target}")
-        if "environment" in services[source]:
-            raise ValueError(f"{source} can connect to only one database in this version.")
+        target_type = nodes[target]["type"]
+        if nodes[source]["type"] != "service" or target_type not in ("database", "cache"):
+            raise ValueError(f"Unsupported connection: {source} → {target}")
 
-        database_env = services[target]["environment"]
-        services[source]["environment"] = {
-            "DB_HOST": target,
-            "DB_PORT": "5432",
-            "DB_NAME": database_env["POSTGRES_DB"],
-            "DB_USER": database_env["POSTGRES_USER"],
-            "DB_PASSWORD": database_env["POSTGRES_PASSWORD"],
-        }
+        env = services[source].setdefault("environment", {})
+        if target_type == "database":
+            if "DB_HOST" in env:
+                raise ValueError(f"{source} can connect to only one database.")
+            database_env = services[target]["environment"]
+            env.update({
+                "DB_HOST": target,
+                "DB_PORT": "5432",
+                "DB_NAME": database_env["POSTGRES_DB"],
+                "DB_USER": database_env["POSTGRES_USER"],
+                "DB_PASSWORD": database_env["POSTGRES_PASSWORD"],
+            })
+        else:
+            if "REDIS_HOST" in env:
+                raise ValueError(f"{source} can connect to only one cache.")
+            env.update({
+                "REDIS_HOST": target,
+                "REDIS_PORT": "6379",
+            })
 
     return {"services": services}
 
