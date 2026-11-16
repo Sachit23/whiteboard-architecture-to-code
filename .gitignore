@@ -15,3 +15,6 @@ __pycache__/
 /graph_*.json
 /mask_*.png
 /box_*.png
+
+# Default output from app.generate_compose.
+/docker-compose.yml
